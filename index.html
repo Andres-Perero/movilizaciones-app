@@ -9,7 +9,7 @@
     <title>Movilizaciones Pro</title>
     
     <!-- FAVICON INLINE -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚐</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -77,15 +77,15 @@
       .btn-theme {
         background: transparent;
         border: none;
-        width: 44px;
-        height: 44px;
+        width: 48px; /* Más grande para móvil */
+        height: 48px;
         border-radius: 12px;
-        font-size: 1.5rem;
+        font-size: 1.6rem; /* Icono más visible */
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        color: var(--text);
+        color: var(--text); /* Usa el color de texto activo para contraste */
       }
       .btn-theme:hover {
         background: var(--bg);
@@ -562,12 +562,13 @@
           document.getElementById("themeBtn").innerText = "☀️";
         }
 
-        // Configurar calendario con la semana ACTUAL (lunes a domingo)
+        // Configurar calendario con el LUNES de la semana actual
         const picker = document.getElementById("datePicker");
         const today = new Date();
         const monday = getMonday(today);
         
-        picker.value = fmtDate(today);
+        // FORZAR el valor del input al lunes de esta semana
+        picker.value = fmtDate(monday);
         currentWeekStart = fmtDate(monday);
 
         picker.addEventListener("change", (e) => {
@@ -624,7 +625,7 @@
         document.body.classList.toggle("dark-mode");
         const isDark = document.body.classList.contains("dark-mode");
         localStorage.setItem("theme", isDark ? "dark" : "light");
-        document.getElementById("themeBtn").innerText = isDark ? "☀️" : "🌙";
+        document.getElementById("themeBtn").innerText = isDark ? "☀️" : "";
       }
 
       function renderDaysView() {
@@ -748,7 +749,7 @@
       }
 
       function clearWeek() {
-        if (confirm("⚠️ ¿Borrar TODA la semana actual?")) {
+        if (confirm("️ ¿Borrar TODA la semana actual?")) {
           getWeekDates(new Date(currentWeekStart)).forEach((d) => delete db[fmtDate(d)]);
           localStorage.setItem("mov_db_v5", JSON.stringify(db));
           renderAll();
@@ -806,7 +807,7 @@
               link.download = `movilizaciones_${currentWeekStart}.png`;
               link.href = canvas.toDataURL();
               link.click();
-              showToast("⬇️ Imagen descargada");
+              showToast("️ Imagen descargada");
             }
           });
         } catch (err) {
