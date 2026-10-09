@@ -7,6 +7,10 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>Movilizaciones Pro</title>
+    
+    <!-- FAVICON INLINE (Icono de transporte) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
       :root {
@@ -47,7 +51,7 @@
       body {
         background: var(--bg);
         color: var(--text);
-        padding-bottom: 120px;
+        padding-bottom: 40px; /* Reducido ya que no hay footer fijo */
         min-height: 100vh;
       }
 
@@ -295,34 +299,6 @@
         padding-top: 16px;
       }
 
-      /* FOOTER */
-      .footer-bar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: var(--card);
-        border-top: 1px solid var(--border);
-        padding: 1rem 1.5rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
-        z-index: 40;
-      }
-      .total-label {
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        font-weight: 700;
-        text-transform: uppercase;
-      }
-      .total-value {
-        font-size: 1.8rem;
-        font-weight: 800;
-        color: var(--primary);
-        letter-spacing: -1px;
-      }
-
       /* MODAL */
       .modal-overlay {
         position: fixed;
@@ -366,6 +342,24 @@
         margin-bottom: 6px;
         text-transform: uppercase;
       }
+      
+      .input-with-btn {
+        display: flex;
+        gap: 8px;
+      }
+      .input-with-btn input {
+        flex: 1;
+      }
+      .btn-suggest {
+        background: var(--bg);
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        padding: 0 16px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: var(--text-muted);
+      }
+
       .form-input,
       .form-select {
         width: 100%;
@@ -383,6 +377,36 @@
         border-color: var(--primary);
         background: var(--card);
       }
+
+      /* Lista de sugerencias en modal */
+      .suggestions-list {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        margin-top: 8px;
+        display: none;
+        background: var(--card);
+      }
+      .suggestions-list.active {
+        display: block;
+      }
+      .suggestion-item {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .suggestion-item:last-child {
+        border-bottom: none;
+      }
+      .suggestion-item:active {
+        background: var(--bg);
+      }
+      .sug-name { font-weight: 600; font-size: 0.95rem; }
+      .sug-price { color: var(--text-muted); font-size: 0.9rem; }
 
       .modal-actions {
         display: flex;
@@ -536,11 +560,6 @@
       </div>
     </main>
 
-    <div class="footer-bar">
-      <span class="total-label">Total Semana</span>
-      <span class="total-value" id="grandTotal">$0.00</span>
-    </div>
-
     <!-- MODAL AGREGAR -->
     <div class="modal-overlay" id="modal">
       <div class="modal-sheet">
@@ -549,8 +568,20 @@
         </h3>
 
         <div class="form-group">
-          <label class="form-label">Destino</label>
-          <select id="locSelect" class="form-select"></select>
+          <label class="form-label">Destino (Editable)</label>
+          <div class="input-with-btn">
+            <input
+              type="text"
+              id="locInput"
+              class="form-input"
+              placeholder="Escribe o selecciona..."
+              autocomplete="off"
+            />
+            <button class="btn-suggest" onclick="toggleSuggestions()" title="Ver lista de locales">
+              📍
+            </button>
+          </div>
+          <div class="suggestions-list" id="suggestionsList"></div>
         </div>
 
         <div class="form-group">
@@ -663,7 +694,7 @@
         // Cargar tema
         if (localStorage.getItem("theme") === "dark") {
           document.body.classList.add("dark-mode");
-          document.getElementById("themeBtn").innerText = "️";
+          document.getElementById("themeBtn").innerText = "☀️";
         }
 
         // Configurar calendario
@@ -676,28 +707,42 @@
           renderAll();
         });
 
-        // Poblar locales
-        const sel = document.getElementById("locSelect");
-        LOCATIONS.forEach((l) => {
-          const o = document.createElement("option");
-          o.value = l.n;
-          o.text = `${l.n} ($${l.p.toFixed(2)})`;
-          o.dataset.p = l.p;
-          sel.appendChild(o);
-        });
-        sel.addEventListener("change", () => {
-          document.getElementById("priceInput").value =
-            sel.options[sel.selectedIndex].dataset.p;
-        });
+        // Poblar lista de sugerencias en modal
+        renderSuggestions();
 
         renderAll();
+      }
+
+      function renderSuggestions() {
+        const list = document.getElementById("suggestionsList");
+        list.innerHTML = "";
+        LOCATIONS.forEach((l) => {
+          const item = document.createElement("div");
+          item.className = "suggestion-item";
+          item.innerHTML = `
+            <span class="sug-name">${l.n}</span>
+            <span class="sug-price">$${l.p.toFixed(2)}</span>
+          `;
+          item.onclick = () => selectSuggestion(l);
+          list.appendChild(item);
+        });
+      }
+
+      function toggleSuggestions() {
+        const list = document.getElementById("suggestionsList");
+        list.classList.toggle("active");
+      }
+
+      function selectSuggestion(loc) {
+        document.getElementById("locInput").value = loc.n;
+        document.getElementById("priceInput").value = loc.p;
+        document.getElementById("suggestionsList").classList.remove("active");
       }
 
       // --- RENDERIZADO ---
       function renderAll() {
         renderDaysView();
         renderSummaryView();
-        updateGrandTotal();
       }
 
       function switchTab(tab) {
@@ -722,7 +767,7 @@
         document.body.classList.toggle("dark-mode");
         const isDark = document.body.classList.contains("dark-mode");
         localStorage.setItem("theme", isDark ? "dark" : "light");
-        document.getElementById("themeBtn").innerText = isDark ? "☀️" : "🌙";
+        document.getElementById("themeBtn").innerText = isDark ? "☀️" : "";
       }
 
       function renderDaysView() {
@@ -814,25 +859,15 @@
         tbody.appendChild(trTotal);
       }
 
-      function updateGrandTotal() {
-        const dates = getWeekDates(new Date(currentWeekStart));
-        let total = 0;
-        dates.forEach((d) => {
-          (db[fmtDate(d)] || []).forEach((e) => (total += parseFloat(e.p)));
-        });
-        document.getElementById("grandTotal").innerText =
-          `$${total.toFixed(2)}`;
-      }
-
       // --- ACCIONES MODAL ---
       function openModal(ds) {
         activeDayDate = ds;
         document.getElementById("modal").classList.add("active");
+        document.getElementById("locInput").value = "";
+        document.getElementById("priceInput").value = "";
         document.getElementById("obsInput").value = "";
-        const sel = document.getElementById("locSelect");
-        sel.selectedIndex = 0;
-        document.getElementById("priceInput").value = sel.options[0].dataset.p;
-        setTimeout(() => document.getElementById("priceInput").focus(), 100);
+        document.getElementById("suggestionsList").classList.remove("active");
+        setTimeout(() => document.getElementById("locInput").focus(), 100);
       }
 
       function closeModal() {
@@ -840,9 +875,14 @@
       }
 
       function saveEntry() {
-        const l = document.getElementById("locSelect").value;
+        const l = document.getElementById("locInput").value.trim();
         const p = parseFloat(document.getElementById("priceInput").value) || 0;
         const o = document.getElementById("obsInput").value.trim();
+
+        if (!l) {
+          alert("Por favor ingresa un destino");
+          return;
+        }
 
         if (!db[activeDayDate]) db[activeDayDate] = [];
         db[activeDayDate].push({ l, p, o });
@@ -959,6 +999,15 @@
 
       document.getElementById("modal").addEventListener("click", (e) => {
         if (e.target.id === "modal") closeModal();
+      });
+
+      // Cerrar sugerencias al hacer click fuera
+      document.addEventListener("click", (e) => {
+        const list = document.getElementById("suggestionsList");
+        const btn = document.querySelector(".btn-suggest");
+        if (!list.contains(e.target) && e.target !== btn) {
+          list.classList.remove("active");
+        }
       });
 
       init();
