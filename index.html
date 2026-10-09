@@ -77,15 +77,15 @@
       .btn-theme {
         background: transparent;
         border: none;
-        width: 48px; /* Más grande para móvil */
+        width: 48px;
         height: 48px;
         border-radius: 12px;
-        font-size: 1.6rem; /* Icono más visible */
+        font-size: 1.6rem;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        color: var(--text); /* Usa el color de texto activo para contraste */
+        color: var(--text);
       }
       .btn-theme:hover {
         background: var(--bg);
@@ -448,7 +448,7 @@
 
         <div class="action-grid">
           <button class="btn-action btn-copy-txt" onclick="copyText()"> Copiar Texto</button>
-          <button class="btn-action btn-copy-img" onclick="copyImage()">🖼️ Copiar Img</button>
+          <button class="btn-action btn-copy-img" onclick="copyImage()">️ Copiar Img</button>
           <button class="btn-action btn-clear" onclick="clearWeek()">🗑️ Borrar Esta Semana</button>
         </div>
       </div>
@@ -463,7 +463,7 @@
           <label class="form-label">Destino (Editable)</label>
           <div class="input-with-btn">
             <input type="text" id="locInput" class="form-input" placeholder="Escribe o selecciona..." autocomplete="off" />
-            <button class="btn-suggest" onclick="toggleSuggestions()" title="Ver lista de locales">📍</button>
+            <button class="btn-suggest" onclick="toggleSuggestions()" title="Ver lista de locales"></button>
           </div>
           <div class="suggestions-list" id="suggestionsList"></div>
         </div>
@@ -562,16 +562,18 @@
           document.getElementById("themeBtn").innerText = "☀️";
         }
 
-        // Configurar calendario con el LUNES de la semana actual
+        // Configurar calendario con HOY seleccionado
         const picker = document.getElementById("datePicker");
         const today = new Date();
-        const monday = getMonday(today);
         
-        // FORZAR el valor del input al lunes de esta semana
-        picker.value = fmtDate(monday);
-        currentWeekStart = fmtDate(monday);
+        // Setear el input a HOY
+        picker.value = fmtDate(today);
+        
+        // Calcular el lunes de la semana de HOY para la vista interna
+        currentWeekStart = fmtDate(getMonday(today));
 
         picker.addEventListener("change", (e) => {
+          // Cuando el usuario cambia la fecha, recalculamos el lunes de ESA nueva fecha
           currentWeekStart = fmtDate(getMonday(new Date(e.target.value)));
           renderAll();
         });
@@ -631,6 +633,7 @@
       function renderDaysView() {
         const container = document.getElementById("view-days");
         container.innerHTML = "";
+        // Usamos currentWeekStart que siempre es el Lunes calculado
         const dates = getWeekDates(new Date(currentWeekStart));
 
         dates.forEach((d) => {
