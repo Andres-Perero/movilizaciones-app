@@ -8,8 +8,8 @@
     />
     <title>Movilizaciones Pro</title>
     
-    <!-- FAVICON INLINE (Icono de transporte) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
+    <!-- FAVICON INLINE -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚐</text></svg>">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -27,7 +27,6 @@
         --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
       }
 
-      /* MODO OSCURO */
       body.dark-mode {
         --bg: #1e293b;
         --card: #334155;
@@ -43,22 +42,20 @@
         padding: 0;
         font-family: "Inter", system-ui, sans-serif;
         -webkit-tap-highlight-color: transparent;
-        transition:
-          background 0.3s,
-          color 0.3s;
+        transition: background 0.3s, color 0.3s;
       }
 
       body {
         background: var(--bg);
         color: var(--text);
-        padding-bottom: 40px; /* Reducido ya que no hay footer fijo */
+        padding-bottom: 40px;
         min-height: 100vh;
       }
 
       /* HEADER */
       header {
         background: var(--card);
-        padding: 1rem 1.5rem;
+        padding: 1rem 1.25rem;
         position: sticky;
         top: 0;
         z-index: 50;
@@ -69,22 +66,36 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
       }
       h1 {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
         font-weight: 800;
         letter-spacing: -0.5px;
       }
 
-      .date-control {
+      .btn-theme {
+        background: transparent;
+        border: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        font-size: 1.5rem;
         display: flex;
-        gap: 10px;
         align-items: center;
-        margin-bottom: 1rem;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text);
+      }
+      .btn-theme:hover {
+        background: var(--bg);
+      }
+
+      .date-control {
+        margin-bottom: 0.75rem;
       }
       input[type="date"] {
-        flex: 1;
+        width: 100%;
         padding: 12px;
         border-radius: 12px;
         border: 1px solid var(--border);
@@ -93,18 +104,6 @@
         background: var(--bg);
         color: var(--text);
         text-align: center;
-      }
-      .btn-theme {
-        background: var(--bg);
-        border: 1px solid var(--border);
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        font-size: 1.2rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
       }
 
       /* TABS */
@@ -136,7 +135,7 @@
 
       /* MAIN CONTENT */
       main {
-        padding: 1rem 1.5rem;
+        padding: 1rem 1.25rem;
         max-width: 600px;
         margin: 0 auto;
       }
@@ -148,14 +147,8 @@
         display: block;
       }
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(5px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
       }
 
       /* DAY CARDS */
@@ -192,28 +185,11 @@
         padding: 12px 0;
         border-bottom: 1px dashed var(--border);
       }
-      .mob-item:last-child {
-        border-bottom: none;
-      }
-      .mob-info {
-        flex: 1;
-        padding-right: 10px;
-      }
-      .mob-name {
-        font-weight: 600;
-        font-size: 0.95rem;
-      }
-      .mob-obs {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        margin-top: 2px;
-        font-style: italic;
-      }
-      .mob-price {
-        font-weight: 700;
-        font-size: 1rem;
-        margin-right: 10px;
-      }
+      .mob-item:last-child { border-bottom: none; }
+      .mob-info { flex: 1; padding-right: 10px; }
+      .mob-name { font-weight: 600; font-size: 0.95rem; }
+      .mob-obs { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; font-style: italic; }
+      .mob-price { font-weight: 700; font-size: 1rem; margin-right: 10px; }
       .btn-del {
         background: rgba(239, 68, 68, 0.1);
         color: var(--danger);
@@ -255,10 +231,7 @@
         padding: 1rem;
         margin-bottom: 1rem;
       }
-      .summary-table {
-        width: 100%;
-        border-collapse: collapse;
-      }
+      .summary-table { width: 100%; border-collapse: collapse; }
       .summary-table th {
         background: var(--primary);
         color: white;
@@ -273,24 +246,11 @@
         border-bottom: 1px solid var(--border);
         font-size: 0.95rem;
       }
-      .summary-table tr:last-child td {
-        border-bottom: none;
-      }
-      .col-price {
-        text-align: right;
-        font-weight: 700;
-        white-space: nowrap;
-        width: 80px;
-      }
-      .col-day {
-        font-weight: 700;
-        color: var(--primary);
-        width: 70px;
-      }
+      .summary-table tr:last-child td { border-bottom: none; }
+      .col-price { text-align: right; font-weight: 700; white-space: nowrap; width: 80px; }
+      .col-day { font-weight: 700; color: var(--primary); width: 70px; }
 
-      .total-row {
-        background: rgba(59, 130, 246, 0.05) !important;
-      }
+      .total-row { background: rgba(59, 130, 246, 0.05) !important; }
       .total-row td {
         font-size: 1.2rem;
         font-weight: 800;
@@ -311,9 +271,7 @@
         z-index: 100;
         padding: 1rem;
       }
-      .modal-overlay.active {
-        display: flex;
-      }
+      .modal-overlay.active { display: flex; }
       .modal-sheet {
         background: var(--card);
         width: 100%;
@@ -323,17 +281,11 @@
         animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       }
       @keyframes slideUp {
-        from {
-          transform: translateY(100%);
-        }
-        to {
-          transform: translateY(0);
-        }
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
       }
 
-      .form-group {
-        margin-bottom: 1.2rem;
-      }
+      .form-group { margin-bottom: 1.2rem; }
       .form-label {
         display: block;
         font-size: 0.8rem;
@@ -343,13 +295,8 @@
         text-transform: uppercase;
       }
       
-      .input-with-btn {
-        display: flex;
-        gap: 8px;
-      }
-      .input-with-btn input {
-        flex: 1;
-      }
+      .input-with-btn { display: flex; gap: 8px; }
+      .input-with-btn input { flex: 1; }
       .btn-suggest {
         background: var(--bg);
         border: 2px solid var(--border);
@@ -360,8 +307,7 @@
         color: var(--text-muted);
       }
 
-      .form-input,
-      .form-select {
+      .form-input {
         width: 100%;
         padding: 14px;
         border: 2px solid var(--border);
@@ -371,14 +317,12 @@
         color: var(--text);
         transition: border-color 0.2s;
       }
-      .form-input:focus,
-      .form-select:focus {
+      .form-input:focus {
         outline: none;
         border-color: var(--primary);
         background: var(--card);
       }
 
-      /* Lista de sugerencias en modal */
       .suggestions-list {
         max-height: 200px;
         overflow-y: auto;
@@ -388,9 +332,7 @@
         display: none;
         background: var(--card);
       }
-      .suggestions-list.active {
-        display: block;
-      }
+      .suggestions-list.active { display: block; }
       .suggestion-item {
         padding: 12px 16px;
         border-bottom: 1px solid var(--border);
@@ -399,20 +341,12 @@
         justify-content: space-between;
         align-items: center;
       }
-      .suggestion-item:last-child {
-        border-bottom: none;
-      }
-      .suggestion-item:active {
-        background: var(--bg);
-      }
+      .suggestion-item:last-child { border-bottom: none; }
+      .suggestion-item:active { background: var(--bg); }
       .sug-name { font-weight: 600; font-size: 0.95rem; }
       .sug-price { color: var(--text-muted); font-size: 0.9rem; }
 
-      .modal-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 1.5rem;
-      }
+      .modal-actions { display: flex; gap: 10px; margin-top: 1.5rem; }
       .btn-modal {
         flex: 1;
         padding: 16px;
@@ -422,14 +356,8 @@
         border: none;
         cursor: pointer;
       }
-      .btn-cancel {
-        background: var(--bg);
-        color: var(--text-muted);
-      }
-      .btn-save {
-        background: var(--primary);
-        color: white;
-      }
+      .btn-cancel { background: var(--bg); color: var(--text-muted); }
+      .btn-save { background: var(--primary); color: white; }
 
       /* ACTION BUTTONS */
       .action-grid {
@@ -450,14 +378,8 @@
         justify-content: center;
         gap: 8px;
       }
-      .btn-copy-txt {
-        background: var(--text);
-        color: var(--bg);
-      }
-      .btn-copy-img {
-        background: var(--primary);
-        color: white;
-      }
+      .btn-copy-txt { background: var(--text); color: var(--bg); }
+      .btn-copy-img { background: var(--primary); color: white; }
       .btn-clear {
         background: rgba(239, 68, 68, 0.1);
         color: var(--danger);
@@ -481,16 +403,14 @@
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       }
-      .toast.show {
-        transform: translateX(-50%) translateY(0);
-      }
+      .toast.show { transform: translateX(-50%) translateY(0); }
     </style>
   </head>
   <body>
     <header>
       <div class="header-top">
         <h1>Movilizaciones</h1>
-        <button class="btn-theme" onclick="toggleTheme()" id="themeBtn">
+        <button class="btn-theme" onclick="toggleTheme()" id="themeBtn" aria-label="Cambiar tema">
           🌙
         </button>
       </div>
@@ -500,39 +420,19 @@
       </div>
 
       <div class="tabs">
-        <button class="tab active" onclick="switchTab('days')">
-          📅 Por Día
-        </button>
+        <button class="tab active" onclick="switchTab('days')"> Por Día</button>
         <button class="tab" onclick="switchTab('summary')">📊 Resumen</button>
       </div>
     </header>
 
     <main>
-      <!-- VISTA POR DÍA -->
       <div id="view-days" class="view-section active"></div>
 
-      <!-- VISTA RESUMEN -->
       <div id="view-summary" class="view-section">
         <div class="summary-container" id="captureArea">
-          <div
-            style="
-              padding: 0 16px 10px 16px;
-              border-bottom: 1px solid var(--border);
-              margin-bottom: 10px;
-            "
-          >
-            <h3
-              style="font-size: 1.1rem; font-weight: 800; color: var(--primary)"
-              id="summaryTitle"
-            >
-              Resumen Semanal
-            </h3>
-            <p
-              style="font-size: 0.85rem; color: var(--text-muted)"
-              id="summarySubtitle"
-            >
-              Semana actual
-            </p>
+          <div style="padding: 0 16px 10px 16px; border-bottom: 1px solid var(--border); margin-bottom: 10px;">
+            <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--primary)" id="summaryTitle">Resumen Semanal</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted)" id="summarySubtitle">Semana actual</p>
           </div>
           <table class="summary-table">
             <thead>
@@ -547,15 +447,9 @@
         </div>
 
         <div class="action-grid">
-          <button class="btn-action btn-copy-txt" onclick="copyText()">
-            📋 Copiar Texto
-          </button>
-          <button class="btn-action btn-copy-img" onclick="copyImage()">
-            🖼️ Copiar Img
-          </button>
-          <button class="btn-action btn-clear" onclick="clearWeek()">
-            🗑️ Borrar Esta Semana
-          </button>
+          <button class="btn-action btn-copy-txt" onclick="copyText()"> Copiar Texto</button>
+          <button class="btn-action btn-copy-img" onclick="copyImage()">🖼️ Copiar Img</button>
+          <button class="btn-action btn-clear" onclick="clearWeek()">🗑️ Borrar Esta Semana</button>
         </div>
       </div>
     </main>
@@ -563,55 +457,30 @@
     <!-- MODAL AGREGAR -->
     <div class="modal-overlay" id="modal">
       <div class="modal-sheet">
-        <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem">
-          Nueva Movilización
-        </h3>
+        <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem">Nueva Movilización</h3>
 
         <div class="form-group">
           <label class="form-label">Destino (Editable)</label>
           <div class="input-with-btn">
-            <input
-              type="text"
-              id="locInput"
-              class="form-input"
-              placeholder="Escribe o selecciona..."
-              autocomplete="off"
-            />
-            <button class="btn-suggest" onclick="toggleSuggestions()" title="Ver lista de locales">
-              📍
-            </button>
+            <input type="text" id="locInput" class="form-input" placeholder="Escribe o selecciona..." autocomplete="off" />
+            <button class="btn-suggest" onclick="toggleSuggestions()" title="Ver lista de locales">📍</button>
           </div>
           <div class="suggestions-list" id="suggestionsList"></div>
         </div>
 
         <div class="form-group">
           <label class="form-label">Precio ($)</label>
-          <input
-            type="number"
-            id="priceInput"
-            class="form-input"
-            step="0.10"
-            inputmode="decimal"
-          />
+          <input type="number" id="priceInput" class="form-input" step="0.10" inputmode="decimal" />
         </div>
 
         <div class="form-group">
           <label class="form-label">Observación (Opcional)</label>
-          <input
-            type="text"
-            id="obsInput"
-            class="form-input"
-            placeholder="Ej: Viaje extra..."
-          />
+          <input type="text" id="obsInput" class="form-input" placeholder="Ej: Viaje extra..." />
         </div>
 
         <div class="modal-actions">
-          <button class="btn-modal btn-cancel" onclick="closeModal()">
-            Cancelar
-          </button>
-          <button class="btn-modal btn-save" onclick="saveEntry()">
-            Guardar
-          </button>
+          <button class="btn-modal btn-cancel" onclick="closeModal()">Cancelar</button>
+          <button class="btn-modal btn-save" onclick="saveEntry()">Guardar</button>
         </div>
       </div>
     </div>
@@ -619,7 +488,6 @@
     <div class="toast" id="toast">¡Copiado!</div>
 
     <script>
-      // --- DATOS BASE ---
       const LOCATIONS = [
         { n: "PIADY", p: 6.0 },
         { n: "PROMARISCOS", p: 8.5 },
@@ -662,12 +530,10 @@
         { n: "QUEVEDO", p: 25.5 },
       ];
 
-      // --- ESTADO ---
       let currentWeekStart = "";
       let activeDayDate = "";
       let db = JSON.parse(localStorage.getItem("mov_db_v5")) || {};
 
-      // --- UTILIDADES FECHA ---
       function getMonday(d) {
         d = new Date(d);
         const day = d.getDay();
@@ -689,27 +555,27 @@
         return arr;
       }
 
-      // --- INICIALIZACIÓN ---
       function init() {
-        // Cargar tema
+        // Cargar tema guardado
         if (localStorage.getItem("theme") === "dark") {
           document.body.classList.add("dark-mode");
           document.getElementById("themeBtn").innerText = "☀️";
         }
 
-        // Configurar calendario
+        // Configurar calendario con la semana ACTUAL (lunes a domingo)
         const picker = document.getElementById("datePicker");
-        picker.value = fmtDate(new Date());
-        currentWeekStart = fmtDate(getMonday(new Date()));
+        const today = new Date();
+        const monday = getMonday(today);
+        
+        picker.value = fmtDate(today);
+        currentWeekStart = fmtDate(monday);
 
         picker.addEventListener("change", (e) => {
           currentWeekStart = fmtDate(getMonday(new Date(e.target.value)));
           renderAll();
         });
 
-        // Poblar lista de sugerencias en modal
         renderSuggestions();
-
         renderAll();
       }
 
@@ -719,18 +585,14 @@
         LOCATIONS.forEach((l) => {
           const item = document.createElement("div");
           item.className = "suggestion-item";
-          item.innerHTML = `
-            <span class="sug-name">${l.n}</span>
-            <span class="sug-price">$${l.p.toFixed(2)}</span>
-          `;
+          item.innerHTML = `<span class="sug-name">${l.n}</span><span class="sug-price">$${l.p.toFixed(2)}</span>`;
           item.onclick = () => selectSuggestion(l);
           list.appendChild(item);
         });
       }
 
       function toggleSuggestions() {
-        const list = document.getElementById("suggestionsList");
-        list.classList.toggle("active");
+        document.getElementById("suggestionsList").classList.toggle("active");
       }
 
       function selectSuggestion(loc) {
@@ -739,19 +601,14 @@
         document.getElementById("suggestionsList").classList.remove("active");
       }
 
-      // --- RENDERIZADO ---
       function renderAll() {
         renderDaysView();
         renderSummaryView();
       }
 
       function switchTab(tab) {
-        document
-          .querySelectorAll(".tab")
-          .forEach((t) => t.classList.remove("active"));
-        document
-          .querySelectorAll(".view-section")
-          .forEach((v) => v.classList.remove("active"));
+        document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+        document.querySelectorAll(".view-section").forEach((v) => v.classList.remove("active"));
 
         if (tab === "days") {
           document.querySelector(".tab:nth-child(1)").classList.add("active");
@@ -767,7 +624,7 @@
         document.body.classList.toggle("dark-mode");
         const isDark = document.body.classList.contains("dark-mode");
         localStorage.setItem("theme", isDark ? "dark" : "light");
-        document.getElementById("themeBtn").innerText = isDark ? "☀️" : "";
+        document.getElementById("themeBtn").innerText = isDark ? "☀️" : "🌙";
       }
 
       function renderDaysView() {
@@ -785,35 +642,32 @@
 
           let itemsHtml = "";
           if (entries.length === 0) {
-            itemsHtml =
-              '<div style="text-align:center; color:var(--text-muted); padding:1rem; font-style:italic; font-size:0.9rem;">Sin registros</div>';
+            itemsHtml = '<div style="text-align:center; color:var(--text-muted); padding:1rem; font-style:italic; font-size:0.9rem;">Sin registros</div>';
           } else {
             entries.forEach((e, idx) => {
               itemsHtml += `
-                        <div class="mob-item">
-                            <div class="mob-info">
-                                <div class="mob-name">${e.l}</div>
-                                ${e.o ? `<div class="mob-obs">${e.o}</div>` : ""}
-                            </div>
-                            <div style="display:flex; align-items:center;">
-                                <span class="mob-price">$${parseFloat(e.p).toFixed(2)}</span>
-                                <button class="btn-del" onclick="delItem('${ds}',${idx})">×</button>
-                            </div>
-                        </div>
-                    `;
+                <div class="mob-item">
+                  <div class="mob-info">
+                    <div class="mob-name">${e.l}</div>
+                    ${e.o ? `<div class="mob-obs">${e.o}</div>` : ""}
+                  </div>
+                  <div style="display:flex; align-items:center;">
+                    <span class="mob-price">$${parseFloat(e.p).toFixed(2)}</span>
+                    <button class="btn-del" onclick="delItem('${ds}',${idx})">×</button>
+                  </div>
+                </div>`;
             });
           }
 
           card.innerHTML = `
-                <div class="day-header">
-                    <div>
-                        <div class="day-name">${dayName}</div>
-                        <div class="day-date">${d.getDate()} de ${d.toLocaleString("es", { month: "long" })}</div>
-                    </div>
-                </div>
-                ${itemsHtml}
-                <button class="btn-add" onclick="openModal('${ds}')">+ Agregar Movilización</button>
-            `;
+            <div class="day-header">
+              <div>
+                <div class="day-name">${dayName}</div>
+                <div class="day-date">${d.getDate()} de ${d.toLocaleString("es", { month: "long" })}</div>
+              </div>
+            </div>
+            ${itemsHtml}
+            <button class="btn-add" onclick="openModal('${ds}')">+ Agregar Movilización</button>`;
           container.appendChild(card);
         });
       }
@@ -824,16 +678,14 @@
         const dates = getWeekDates(new Date(currentWeekStart));
         let total = 0;
 
-        document.getElementById("summaryTitle").innerText = `Reporte Semanal`;
+        document.getElementById("summaryTitle").innerText = "Reporte Semanal";
         document.getElementById("summarySubtitle").innerText =
           `Del ${dates[0].toLocaleDateString("es-ES")} al ${dates[6].toLocaleDateString("es-ES")}`;
 
         dates.forEach((d) => {
           const ds = fmtDate(d);
           const entries = db[ds] || [];
-          const dayShort = d
-            .toLocaleDateString("es-ES", { weekday: "short" })
-            .replace(".", "");
+          const dayShort = d.toLocaleDateString("es-ES", { weekday: "short" }).replace(".", "");
 
           if (entries.length > 0) {
             entries.forEach((e) => {
@@ -841,10 +693,9 @@
               total += price;
               const tr = document.createElement("tr");
               tr.innerHTML = `
-                        <td class="col-day">${dayShort}</td>
-                        <td>${e.l} ${e.o ? `<small style="color:var(--text-muted)">(${e.o})</small>` : ""}</td>
-                        <td class="col-price">$${price.toFixed(2)}</td>
-                    `;
+                <td class="col-day">${dayShort}</td>
+                <td>${e.l} ${e.o ? `<small style="color:var(--text-muted)">(${e.o})</small>` : ""}</td>
+                <td class="col-price">$${price.toFixed(2)}</td>`;
               tbody.appendChild(tr);
             });
           }
@@ -853,13 +704,11 @@
         const trTotal = document.createElement("tr");
         trTotal.className = "total-row";
         trTotal.innerHTML = `
-            <td colspan="2" style="text-align:right; padding-right:20px;">TOTAL SEMANA:</td>
-            <td class="col-price" style="font-size:1.3rem;">$${total.toFixed(2)}</td>
-        `;
+          <td colspan="2" style="text-align:right; padding-right:20px;">TOTAL SEMANA:</td>
+          <td class="col-price" style="font-size:1.3rem;">$${total.toFixed(2)}</td>`;
         tbody.appendChild(trTotal);
       }
 
-      // --- ACCIONES MODAL ---
       function openModal(ds) {
         activeDayDate = ds;
         document.getElementById("modal").classList.add("active");
@@ -879,10 +728,7 @@
         const p = parseFloat(document.getElementById("priceInput").value) || 0;
         const o = document.getElementById("obsInput").value.trim();
 
-        if (!l) {
-          alert("Por favor ingresa un destino");
-          return;
-        }
+        if (!l) { alert("Por favor ingresa un destino"); return; }
 
         if (!db[activeDayDate]) db[activeDayDate] = [];
         db[activeDayDate].push({ l, p, o });
@@ -903,16 +749,13 @@
 
       function clearWeek() {
         if (confirm("⚠️ ¿Borrar TODA la semana actual?")) {
-          getWeekDates(new Date(currentWeekStart)).forEach(
-            (d) => delete db[fmtDate(d)],
-          );
+          getWeekDates(new Date(currentWeekStart)).forEach((d) => delete db[fmtDate(d)]);
           localStorage.setItem("mov_db_v5", JSON.stringify(db));
           renderAll();
           showToast("Semana borrada");
         }
       }
 
-      // --- COPIAR TEXTO ---
       function copyText() {
         const dates = getWeekDates(new Date(currentWeekStart));
         let txt = `*MOVILIZACIONES SEMANA*\n`;
@@ -926,10 +769,7 @@
           const entries = db[ds] || [];
           if (entries.length > 0) {
             hasData = true;
-            const dayShort = d
-              .toLocaleDateString("es-ES", { weekday: "short" })
-              .toUpperCase();
-
+            const dayShort = d.toLocaleDateString("es-ES", { weekday: "short" }).toUpperCase();
             entries.forEach((e) => {
               txt += `${dayShort} | ${e.l.padEnd(25)} $${parseFloat(e.p).toFixed(2)}`;
               if (e.o) txt += ` (${e.o})`;
@@ -939,42 +779,27 @@
           }
         });
 
-        if (!hasData) {
-          showToast("No hay datos");
-          return;
-        }
+        if (!hasData) { showToast("No hay datos"); return; }
 
         txt += `\n----------------------------\n`;
         txt += `*TOTAL: $${total.toFixed(2)}*`;
 
-        navigator.clipboard
-          .writeText(txt)
-          .then(() => showToast("✅ Texto copiado"));
+        navigator.clipboard.writeText(txt).then(() => showToast("✅ Texto copiado"));
       }
 
-      // --- COPIAR IMAGEN ---
       async function copyImage() {
         const element = document.getElementById("captureArea");
-
         try {
           const canvas = await html2canvas(element, {
             scale: 2,
-            backgroundColor: document.body.classList.contains("dark-mode")
-              ? "#334155"
-              : "#ffffff",
+            backgroundColor: document.body.classList.contains("dark-mode") ? "#334155" : "#ffffff",
             useCORS: true,
           });
 
           canvas.toBlob(async (blob) => {
-            if (!blob) {
-              showToast("Error generando imagen");
-              return;
-            }
-
+            if (!blob) { showToast("Error generando imagen"); return; }
             try {
-              await navigator.clipboard.write([
-                new ClipboardItem({ "image/png": blob }),
-              ]);
+              await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
               showToast("✅ Imagen copiada! Pégala donde quieras");
             } catch (err) {
               const link = document.createElement("a");
@@ -1001,7 +826,6 @@
         if (e.target.id === "modal") closeModal();
       });
 
-      // Cerrar sugerencias al hacer click fuera
       document.addEventListener("click", (e) => {
         const list = document.getElementById("suggestionsList");
         const btn = document.querySelector(".btn-suggest");
