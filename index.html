@@ -9,7 +9,7 @@
     <title>Movilizaciones Pro</title>
     
     <!-- FAVICON INLINE -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'></text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚐</text></svg>">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -420,7 +420,7 @@
       </div>
 
       <div class="tabs">
-        <button class="tab active" onclick="switchTab('days')"> Por Día</button>
+        <button class="tab active" onclick="switchTab('days')">📅 Por Día</button>
         <button class="tab" onclick="switchTab('summary')">📊 Resumen</button>
       </div>
     </header>
@@ -447,8 +447,8 @@
         </div>
 
         <div class="action-grid">
-          <button class="btn-action btn-copy-txt" onclick="copyText()"> Copiar Texto</button>
-          <button class="btn-action btn-copy-img" onclick="copyImage()">️ Copiar Img</button>
+          <button class="btn-action btn-copy-txt" onclick="copyText()">📋 Copiar Texto</button>
+          <button class="btn-action btn-copy-img" onclick="copyImage()">🖼️ Copiar Img</button>
           <button class="btn-action btn-clear" onclick="clearWeek()">🗑️ Borrar Esta Semana</button>
         </div>
       </div>
@@ -463,7 +463,7 @@
           <label class="form-label">Destino (Editable)</label>
           <div class="input-with-btn">
             <input type="text" id="locInput" class="form-input" placeholder="Escribe o selecciona..." autocomplete="off" />
-            <button class="btn-suggest" onclick="toggleSuggestions()" title="Ver lista de locales"></button>
+            <button class="btn-suggest" onclick="toggleSuggestions()" title="Ver lista de locales">📋</button>
           </div>
           <div class="suggestions-list" id="suggestionsList"></div>
         </div>
@@ -534,25 +534,39 @@
       let activeDayDate = "";
       let db = JSON.parse(localStorage.getItem("mov_db_v5")) || {};
 
-      function getMonday(d) {
-        d = new Date(d);
-        const day = d.getDay();
-        const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-        return new Date(d.setDate(diff));
+      // ===== FECHAS SEGURAS (sin problemas de zona horaria) =====
+      function parseLocalDate(str) {
+        // Recibe "YYYY-MM-DD" y devuelve Date en hora local a medianoche
+        const [y, m, d] = str.split("-").map(Number);
+        return new Date(y, m - 1, d);
       }
 
       function fmtDate(d) {
-        return d.toISOString().split("T")[0];
+        // Formatea Date a "YYYY-MM-DD" usando componentes locales
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
       }
 
-      function getWeekDates(mon) {
+      function getMonday(d) {
+        // d es un Date. Devuelve el lunes de esa semana (hora local)
+        const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        const day = date.getDay(); // 0 = domingo, 1 = lunes, ...
+        const diff = day === 0 ? -6 : 1 - day; // Lunes como inicio
+        date.setDate(date.getDate() + diff);
+        return date;
+      }
+
+      function getWeekDates(mondayStr) {
+        // mondayStr = "YYYY-MM-DD" del lunes
+        const mon = parseLocalDate(mondayStr);
         const arr = [];
         for (let i = 0; i < 7; i++) {
-          const d = new Date(mon);
-          d.setDate(d.getDate() + i);
+          const d = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i);
           arr.push(d);
         }
-        return arr;
+        return arr; // [lunes, martes, ..., domingo]
       }
 
       function init() {
@@ -566,15 +580,16 @@
         const picker = document.getElementById("datePicker");
         const today = new Date();
         
-        // Setear el input a HOY
+        // Setear el input a HOY (formato local)
         picker.value = fmtDate(today);
         
-        // Calcular el lunes de la semana de HOY para la vista interna
+        // Calcular el lunes de la semana de HOY
         currentWeekStart = fmtDate(getMonday(today));
 
         picker.addEventListener("change", (e) => {
           // Cuando el usuario cambia la fecha, recalculamos el lunes de ESA nueva fecha
-          currentWeekStart = fmtDate(getMonday(new Date(e.target.value)));
+          const selected = parseLocalDate(e.target.value);
+          currentWeekStart = fmtDate(getMonday(selected));
           renderAll();
         });
 
@@ -627,14 +642,14 @@
         document.body.classList.toggle("dark-mode");
         const isDark = document.body.classList.contains("dark-mode");
         localStorage.setItem("theme", isDark ? "dark" : "light");
-        document.getElementById("themeBtn").innerText = isDark ? "☀️" : "";
+        document.getElementById("themeBtn").innerText = isDark ? "☀️" : "🌙";
       }
 
       function renderDaysView() {
         const container = document.getElementById("view-days");
         container.innerHTML = "";
-        // Usamos currentWeekStart que siempre es el Lunes calculado
-        const dates = getWeekDates(new Date(currentWeekStart));
+        // Siempre Lunes → Domingo
+        const dates = getWeekDates(currentWeekStart);
 
         dates.forEach((d) => {
           const ds = fmtDate(d);
@@ -679,7 +694,7 @@
       function renderSummaryView() {
         const tbody = document.getElementById("summaryBody");
         tbody.innerHTML = "";
-        const dates = getWeekDates(new Date(currentWeekStart));
+        const dates = getWeekDates(currentWeekStart);
         let total = 0;
 
         document.getElementById("summaryTitle").innerText = "Reporte Semanal";
@@ -752,8 +767,8 @@
       }
 
       function clearWeek() {
-        if (confirm("️ ¿Borrar TODA la semana actual?")) {
-          getWeekDates(new Date(currentWeekStart)).forEach((d) => delete db[fmtDate(d)]);
+        if (confirm("⚠️ ¿Borrar TODA la semana actual?")) {
+          getWeekDates(currentWeekStart).forEach((d) => delete db[fmtDate(d)]);
           localStorage.setItem("mov_db_v5", JSON.stringify(db));
           renderAll();
           showToast("Semana borrada");
@@ -761,7 +776,7 @@
       }
 
       function copyText() {
-        const dates = getWeekDates(new Date(currentWeekStart));
+        const dates = getWeekDates(currentWeekStart);
         let txt = `*MOVILIZACIONES SEMANA*\n`;
         txt += `Del ${dates[0].toLocaleDateString("es-ES")} al ${dates[6].toLocaleDateString("es-ES")}\n\n`;
 
@@ -810,7 +825,7 @@
               link.download = `movilizaciones_${currentWeekStart}.png`;
               link.href = canvas.toDataURL();
               link.click();
-              showToast("️ Imagen descargada");
+              showToast("⬇️ Imagen descargada");
             }
           });
         } catch (err) {
